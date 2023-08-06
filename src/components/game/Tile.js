@@ -81,8 +81,8 @@ export default function Tile({ paths, row, col, treasure, gems, gateways, team, 
                     {
                         gems ? gems.map((gem, idx) => {
                             const colorMap = {
-                                "Amber": "fill-amber-500",
-                                "Emerald": "fill-emerald-500",
+                                "Amber": "fill-amber-400",
+                                "Emerald": "fill-emerald-400",
                                 "Sapphire": "fill-cyan-400"
                             }
                             if (gem.Row !== row || gem.Column !== col) {
