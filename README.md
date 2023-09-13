@@ -1,4 +1,4 @@
-# Tsuro
+# Indigo
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/3d12a9ad-1a6c-4556-b0a8-5ac7b26a4f68/deploy-status)](https://app.netlify.com/sites/indigo-quibbble/deploys)
 
