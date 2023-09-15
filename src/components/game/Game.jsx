@@ -1,4 +1,4 @@
-import React, { useEffect, useState, forwardRef } from "react";
+import React, { useEffect, useState, forwardRef, useCallback } from "react";
 import { BsArrowClockwise, BsArrowUp } from "react-icons/bs";
 import { DndProvider } from "react-dnd";
 import DropSpace from "./DropSpace";
@@ -24,23 +24,19 @@ export const Game = forwardRef((props, ref) => {
 
     // board resize logic
     const [tileSize, setTileSize] = useState(0);
+
+    const handleResize = useCallback(() => {
+        const width = 9;
+        if (!ref || !ref.current) return;
+        else setTileSize(ref.current.clientWidth/width);
+    }, [ref])
+
+    useEffect(() => handleResize());
+
     useEffect(() => {
-        function handleResize() {
-            const width = 9;
-            if (!ref || !ref.current) return;
-            else setTileSize(ref.current.clientWidth/width);
-        }
-        handleResize()
-    });
-    useEffect(() => {
-        function handleResize() {
-            const width = 9;
-            if (!ref || !ref.current) return;
-            else setTileSize(ref.current.clientWidth/width);
-        }
         window.addEventListener("resize", handleResize);
         return _ => window.removeEventListener("resize", handleResize)
-    }, [ref]);
+    }, [handleResize]);
 
     return (
         <DndProvider backend={ isMobile ? TouchBackend : HTML5Backend }>
