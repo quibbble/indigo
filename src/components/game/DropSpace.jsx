@@ -1,16 +1,16 @@
 import React from "react";
-import { useDrop } from "react-dnd";
+import { useDroppable } from '@dnd-kit/core';
 
 export default function DropSpace({row, col, tileSize, children}) {
-    const [, drop] = useDrop(() => ({
-        accept: "tile",
-        drop: () => ({ row: row, col: col }),
-        collect: (monitor) => ({
-            isOver: monitor.isOver(),
-            canDrop: monitor.canDrop(),
-        }),
-    }));
+    const {isOver, setNodeRef} = useDroppable({
+        id: row + "," + col,
+        data: {
+            row: row,
+            col: col
+        }
+    });
+
     return (
-        <div style={{ width: `${tileSize}px`, height: `${tileSize/1.1546}px`, marginTop: `${tileSize/6}px` }} ref={drop}>{children}</div>
+        <div ref={ setNodeRef } style={{ width: `${tileSize}px`, height: `${tileSize/1.1546}px`, marginTop: `${tileSize/6}px` }}>{ children }</div>
     )
 }

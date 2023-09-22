@@ -1,9 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { useDrag } from "react-dnd";
+import React, { useEffect, useState, forwardRef } from "react";
 import Path from "./Path";
 import Gem from "./Gem";
+import { useDraggable } from '@dnd-kit/core';
 
-export default function Tile({ paths, row, col, treasure, gems, gateways, team, placeTile, children }) {
+export function DraggableTile({ paths, row, col, treasure, gems, gateways, children }) {
+    const {attributes, isDragging, listeners, setNodeRef, transform} = useDraggable({
+        id: paths,
+        data: {
+            paths: paths
+        }
+    });
+
+    const style = {
+        opacity: isDragging ? 0.9 : undefined,
+        touchAction: "none",
+        transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined
+    }
+
+    return (
+        <Tile ref={ setNodeRef } style={ style } 
+            {...attributes} {...listeners}
+            paths={paths} row={row} col={col} treasure={treasure} gems={gems} gateways={gateways}>
+                { children }
+        </Tile>
+    )
+}
+
+export const Tile = forwardRef(({ paths, row, col, treasure, gems, gateways, children, ...props }, ref) => {
 
     const defaultFill = "fill-zinc-400"
     const [edges, setEdges] = useState({
@@ -35,24 +58,9 @@ export default function Tile({ paths, row, col, treasure, gems, gateways, team, 
         }
     }, [row, col, edges, gateways]);
 
-    const [{opacity}, drag, preview] = useDrag(() => ({
-        type: "tile",
-        item: { paths },
-        canDrag: () => row < 0 && col < 0,
-        end: (item, monitor) => {
-            const dropResult = monitor.getDropResult();
-            if (item && dropResult) {
-                placeTile(team, paths, dropResult.row, dropResult.col);
-            }
-        },
-        collect: (monitor) => ({
-            opacity: monitor.isDragging() ? 0.4 : 1,
-        }),
-    }), [paths, team]);
-
     return (
-        <div ref={ preview }>
-            <div ref={ drag } style={{ opacity }}>
+        <div ref={ ref } { ...props }>
+            <div>
                 <div className="absolute">
                     { children }
                 </div>
@@ -106,4 +114,4 @@ export default function Tile({ paths, row, col, treasure, gems, gateways, team, 
             </div>
         </div>
     )
-}
+})
