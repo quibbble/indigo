@@ -1,7 +1,7 @@
 [![indigo](./screenshot.png)](/)
 
 ## Objective 🎯
-Place tiles to create tangled paths that move gems to your advantage.
+Place tiles to create tangled paths that moves gems to your advantage.
 
 ## Components 🧱
 - A tiled hexagonal game board
