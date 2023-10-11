@@ -25,6 +25,9 @@ export const Game = forwardRef((props, ref) => {
          if (connected && network) setTeam(connected[network.Name])
      }, [connected, network]) 
 
+    // isOver logic
+    const [over, setOver] = useState({"Test": false})
+    
     // drag and drop
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -70,8 +73,8 @@ export const Game = forwardRef((props, ref) => {
                                                         <Tile paths={ el.Paths } row={ rIdx } col={ cIdx } treasure={ el.Treasure } gems={ game.MoreData.Board.Gems } gateways={ game.MoreData.Board.Gateways }>
                                                             <DropSpace key={ cIdx } row={ rIdx } col={ cIdx } tileSize={ tileSize } />
                                                         </Tile> : 
-                                                        <Tile paths={ null } row={ rIdx } col={ cIdx } treasure={ false } gems={ null } gateways={ game.MoreData.Board.Gateways }>
-                                                            <DropSpace key={ cIdx } row={ rIdx } col={ cIdx } tileSize={ tileSize } />                                   
+                                                        <Tile paths={ null } row={ rIdx } col={ cIdx } treasure={ false } gems={ null } gateways={ game.MoreData.Board.Gateways } over={ over }>
+                                                            <DropSpace key={ cIdx } row={ rIdx } col={ cIdx } tileSize={ tileSize } setOver={ setOver } />                                   
                                                         </Tile> 
                                                 }
                                             </div>) 

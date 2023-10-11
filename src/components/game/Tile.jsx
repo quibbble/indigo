@@ -12,7 +12,7 @@ export function DraggableTile({ paths, row, col, treasure, gems, gateways, child
     });
 
     const style = {
-        opacity: isDragging ? 0.9 : undefined,
+        opacity: isDragging ? 0.75 : undefined,
         touchAction: "none",
         transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined
     }
@@ -20,13 +20,15 @@ export function DraggableTile({ paths, row, col, treasure, gems, gateways, child
     return (
         <Tile ref={ setNodeRef } style={ style } 
             {...attributes} {...listeners}
-            paths={paths} row={row} col={col} treasure={treasure} gems={gems} gateways={gateways}>
+            paths={paths} row={row} col={col} 
+            treasure={treasure} gems={gems} 
+            gateways={gateways} over={ {} }>
                 { children }
         </Tile>
     )
 }
 
-export const Tile = forwardRef(({ paths, row, col, treasure, gems, gateways, children, ...props }, ref) => {
+export const Tile = forwardRef(({ paths, row, col, treasure, gems, gateways, over, children, ...props }, ref) => {
 
     const defaultFill = "fill-zinc-400"
     const [edges, setEdges] = useState({
@@ -37,6 +39,12 @@ export const Tile = forwardRef(({ paths, row, col, treasure, gems, gateways, chi
         "E": defaultFill,
         "F": defaultFill,
     })
+
+    const [fill, setFill] = useState("fill-zinc-800")
+    useEffect(() => {
+        if (over && over[row + "," + col]) setFill("fill-zinc-500")
+        else setFill("fill-zinc-800")
+    }, [over])
 
     useEffect(() => {
         if (!gateways) return
@@ -67,6 +75,7 @@ export const Tile = forwardRef(({ paths, row, col, treasure, gems, gateways, chi
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 115.47">
                     { treasure ? <polygon className="fill-indigo-900" points="97.74 30.17 97.74 85.3 50 112.87 2.26 85.3 2.26 30.17 50 2.61 97.74 30.17"/> : <></> }
                     { !treasure && paths ? <polygon className="fill-stone-900" points="97.74 30.17 97.74 85.3 50 112.87 2.26 85.3 2.26 30.17 50 2.61 97.74 30.17"/> : <></> }
+                    { !treasure && !paths ? <polygon className={ fill } points="97.74 30.17 97.74 85.3 50 112.87 2.26 85.3 2.26 30.17 50 2.61 97.74 30.17"/> : <></> }
                     {
                         paths ?
                         [0, 2, 4].map(idx => {
