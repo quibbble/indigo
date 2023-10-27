@@ -15,6 +15,7 @@ export const Game = forwardRef((props, ref) => {
     })
 
     const sendRotateTileAction = useCallback((team, tile) => {
+        console.log("HERE")
         if (!ws.current) return;
         ws.current.send(JSON.stringify({"ActionType": "RotateTileClockwise", "Team": team, "MoreDetails": {"Tile": tile}}));
     })
@@ -94,7 +95,7 @@ export const Game = forwardRef((props, ref) => {
                             <div key={ "hand" + idx } style={{ width: `${ tileSize*1.2 }px`, height: `${ tileSize*1.1546*1.2 }px` }}>
                                 { 
                                     game && network && connected && game.MoreData.Hands[connected[network.Name]] && game.MoreData.Hands[connected[network.Name]].length > idx ? 
-                                        <div className="cursor-pointer" onClick={ () => rotateTile(team, game.MoreData.Hands[connected[network.Name]][idx].Paths) }>
+                                        <div className="cursor-pointer" onClick={ () => sendRotateTileAction(team, game.MoreData.Hands[connected[network.Name]][idx].Paths) }>
                                             <DraggableTile paths={ game.MoreData.Hands[connected[network.Name]][idx].Paths } row={ -1 } col={ -1 } treasure={ false } gems={ null } />
                                         </div> : 
                                         <Tile paths={ null } row={ -1 } col={ -1 } treasure={ false } gems={ null } />
